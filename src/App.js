@@ -1,17 +1,19 @@
 import React from 'react';
 import './App.css';
-import Title from './Title.js';
-import Navbar from './Navbar.js';
-import Playerlookup from './Playerlookup';
-
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import HomePage from 'HomePage.js';
+import PlayerProfilePage from 'PlayerProfile.js';
 
 function App() {
   return (
-    <div className='App'>
-      <Title />
-      <Navbar />
-      <Playerlookup />
-    </div>
+    <Router>
+      <div>
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/PlayerProfilePage" component={PlayerProfilePage} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
