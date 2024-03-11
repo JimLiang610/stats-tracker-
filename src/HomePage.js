@@ -1,47 +1,44 @@
-import React from "react";
-import Title from './Title.js';
-import Navbar from './Navbar.js';
-import PlayerLookup from './PlayerLookup';
-//import the api module 
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import PlayerLookup from './PlayerLookup.js';
 import ValorantAPI from 'unofficial-valorant-api';
 const valorantAPI = new ValorantAPI();
 
-class HomePage extends React.Component {
-    constructor() {
-        super()
-        this.state = {
-            playerInfoArr: []
-        }
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handlePlayerLookup = this.handlePlayerLookup.bind(this);
-    }
-    
-    handlePlayerLookup(arr) {
-        this.setState({playerInfoArr: arr})
-        if (this.state.playerInfoArr.length == 2) {
-            valorantAPI.getAccount({name: this.state.playerInfoArr[0], tag: this.state.playerInfoArr[1]});
-        }
-    }
+function HomePage() {
+    const [accountInfo, setAccountInfo] = useState('');
+    const navigate = useNavigate(); // Use useNavigate hook to get the navigation function
 
-    //TODO: error handling for invalid input
-    handleSubmit(event) {
-        //prevent reloading page when user presses enter
+    async function handleSubmit(event) {
         event.preventDefault();
-        //convert text input to array 
-        const playerInfoArr = this.state.input.split('#');
-        this.handlePlayerLookup(playerInfoArr);
+        const accountArr = accountInfo.split('#');
+
+        if (accountArr.length === 2) {
+            try {
+                const accountPromise = valorantAPI.getAccount({ name: accountArr[0], tag: accountArr[1] });
+                const account = await accountPromise;
+                if (account.status === 200) {
+                    navigate('/PlayerProfilePage'); // Navigate using the navigate function
+                } else {
+                    console.error("Error: Account retrieval failed. Status code:", account.status);
+                }
+            } catch (error) {
+                console.error("Error occurred:", error);
+            }
+        }
     }
 
+    function handleInputChange(event) {
+        setAccountInfo(event.target.value);
+    }
 
-    render(){
-        return (
-            <div className='App'>
-            <Title />
-            <Navbar />
-            <form onSubmit={this.handleSubmit}>
-                <PlayerLookup sendAccountArr={this.handlePlayerLookup}/>
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input type="text" value={accountInfo} onChange={handleInputChange} />
+                <button type="submit">Submit</button>
             </form>
-            </div>
-        );
-    }
+        </div>
+    );
 }
+
+export default HomePage;
