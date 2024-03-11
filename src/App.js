@@ -1,17 +1,18 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import HomePage from 'HomePage.js';
-import PlayerProfilePage from 'PlayerProfile.js';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './HomePage.js';
+import PlayerProfilePage from './PlayerProfilePage.js';
 
 function App() {
   return (
     <Router>
       <div>
-        <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/PlayerProfilePage" component={PlayerProfilePage} />
-        </Switch>
+        <Routes>
+                          {/* component */}
+          <Route path="/" element={<HomePage/>} />
+          <Route path="/PlayerProfilePage" element={<PlayerProfilePage/>} />
+        </Routes>
       </div>
     </Router>
   );

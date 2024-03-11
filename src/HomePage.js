@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import Navbar from './Navbar.js';
+import Title from './Title.js';
 import PlayerLookup from './PlayerLookup.js';
 import ValorantAPI from 'unofficial-valorant-api';
 const valorantAPI = new ValorantAPI();
 
 function HomePage() {
     const [accountInfo, setAccountInfo] = useState('');
-    const navigate = useNavigate(); // Use useNavigate hook to get the navigation function
+    const navigate = useNavigate();
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -27,15 +29,16 @@ function HomePage() {
         }
     }
 
-    function handleInputChange(event) {
-        setAccountInfo(event.target.value);
+    function handlePlayerLookup(string) {
+        setAccountInfo(string);
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input type="text" value={accountInfo} onChange={handleInputChange} />
-                <button type="submit">Submit</button>
+                <Title />
+                <Navbar />
+                <PlayerLookup sendAccountString={handlePlayerLookup} />
             </form>
         </div>
     );

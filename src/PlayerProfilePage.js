@@ -1,6 +1,6 @@
 import React from 'react'; 
 
-class PlayerProfile extends React.Component {
+class PlayerProfilePage extends React.Component {
     constructor(props) {
         super(props)
     }
